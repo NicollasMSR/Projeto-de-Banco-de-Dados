@@ -1,0 +1,214 @@
+create database consecionaria;
+
+create table consecionaria(
+cnpj_conse varchar(20) primary key NOT NULL,
+nome_conse varchar (50),
+endereço_conse varchar (30),
+bairro_conse varchar(30),
+cidade_conse varchar (30),
+cep_conse varchar (20),
+telefone_conse varchar(15));
+
+create table cliente(
+cpf_clint varchar(20) primary key NOT NULL,
+nome_clint varchar (50),
+endereço_clint varchar (30),
+bairro_clint varchar(30),
+cidade_clint varchar (30),
+cep_clint varchar (20),
+telefone_clint varchar(15));
+
+create table carro(
+cod_car int primary key AUTO_INCREMENT,
+nome_car varchar (50),
+marca_car varchar (30),
+ano_car int);
+
+create table seguro(
+cod_seg int primary key AUTO_INCREMENT,
+data_inicio varchar (10),
+data_termino varchar (10),
+cnpj_conse varchar (20),
+cpf_clint varchar(20),
+cod_car int,
+foreign key (cnpj_conse) references consecionaria (cnpj_conse),
+foreign key (cpf_clint) references cliente (cpf_clint),
+foreign key (cod_car) references carro (cod_car));
+
+create table compra(
+cod_vend int primary key AUTO_INCREMENT,
+data_vend varchar (10),
+valor_vend varchar (50),
+cnpj_conse varchar(20),
+cpf_clint varchar(20),
+cod_car int,
+cod_seg int,
+foreign key (cnpj_conse) references consecionaria (cnpj_conse),
+foreign key (cpf_clint) references cliente (cpf_clint),
+foreign key (cod_car) references carro (cod_car),
+foreign key (cod_seg) references seguro (cod_seg));
+
+insert into consecionaria values("12.345.678/0001-00", "Consecionaria do Seu Zé", "Av. Nove de Julho, 4100", "Jardins", "São Paulo","01024-159","4025-3926");
+insert into consecionaria values("12.345.678/0002-00", "Consecionaria do Seu Zé Loja 2", "Av. Frederico Ozanan,5575", "Vila Rio Branco", "Jundiaí","35724-159","4029-3828");
+insert into consecionaria values("12.345.678/0003-00", "Consecionaria do Seu Zé Loja 3", "Av. Lix da Cunha, 5945", "Vila Industrial", "Campinas","46824-159","4021-4122");
+insert into consecionaria values("12.345.678/0004-00", "Consecionaria do Seu Zé Loja 4", "Av. Santos Dumont, 650", "Vila Ana Maria", "Sorocaba","59124-159","4022-2342");
+insert into consecionaria values("12.345.678/0005-00", "Consecionaria do Seu Zé Loja 5", "Av. Perimetral, 168", "Vila Matias", "Santos","25824-159","4029-2845");
+
+insert into cliente values("123.456.789-09", "Suzana de Oliveira", "Rua Antonio de Marins, 947", "Santa Cruz", "São Paulo", "01048-155", "(11) 99854-6562");
+insert into cliente values("132.446.758-48", "Felipe de Almeida", "Rua José Henrique de Matos, 951", "Vila Flora", "Sorocaba", "58730-185", "(11) 92861-7613");
+insert into cliente values("683.123.753-52", "Rita de Cassia Silva", "Rua Veneza, 351", "Villas de Icaraí", "Campinas", "46926-160", "(11) 98475-5326");
+insert into cliente values("598.153.425-69", "João Paulo Schwengberson", "Rua Guarulhos, 159", "Vila Madalena", "Jundiaí", "36127-154", "(11) 99586-1542");
+insert into cliente values("753.548.791-17", "Mauro de Alves Santos", "Rua Santos Dumont, 359", "Jardim Aeroporto", "Santos", "25986-152", "(11) 95137-9753");
+
+insert into carro values(00, "C300 AMG", "Mercedes-Benz", 2022);
+insert into carro values(00, "Tiggo 8 PRO", "KIA", 2023);
+insert into carro values(00, "X6", "BMW", 2019);
+insert into carro values(00, "CLA 200", "Mercedes-Benz", 2022);
+insert into carro values(00, "I8", "BMW", 2022);
+
+insert into seguro values(00, "30/08/2023", "30/08/2033", "12.345.678/0001-00", "123.456.789-09", 05);
+insert into seguro values(00, "11/05/2023", "11/05/2033", "12.345.678/0004-00", "132.446.758-48", 03);
+insert into seguro values(00, "03/04/2023", "03/04/2033", "12.345.678/0003-00", "683.123.753-52", 01);
+insert into seguro values(00, "09/11/2022", "09/11/2033", "12.345.678/0002-00", "598.153.425-69", 04);
+insert into seguro values(00, "15/10/2022", "15/10/2033", "12.345.678/0005-00", "753.548.791-17", 02);
+
+insert into compra values(00, "30/08/2023","R$ 597.850,00", "12.345.678/0001-00", "123.456.789-09", 05, 43);
+insert into compra values(00, "09/11/2022","R$ 336.900,00", "12.345.678/0002-00", "598.153.425-69", 04, 46);
+insert into compra values(00, "11/05/2023","R$ 469.900,00", "12.345.678/0004-00", "132.446.758-48", 03, 44);
+insert into compra values(00, "03/04/2023","R$ 399.900,00", "12.345.678/0003-00", "683.123.753-52", 01, 45);
+insert into compra values(00, "15/10/2022","R$ 239.990,00", "12.345.678/0005-00", "753.548.791-17", 02, 47);
+   
+select * from carro
+select * from consecionaria
+select * from compra 
+
+SELECT 
+    carro.nome_car,
+    carro.marca_car,
+    carro.ano_car,
+    cliente.nome_clint,
+    cliente.telefone_clint,
+    compra.data_vend,
+    compra.valor_vend
+FROM 
+    compra
+INNER JOIN 
+    carro ON compra.cod_car = carro.cod_car
+INNER JOIN 
+    cliente ON compra.cpf_clint = cliente.cpf_clint;
+
+SELECT 
+    consecionaria.nome_conse,
+    consecionaria.telefone_conse,
+    cliente.nome_clint,
+    cliente.telefone_clint,
+    compra.data_vend,
+    compra.valor_vend
+FROM 
+    compra
+INNER JOIN 
+    consecionaria ON compra.cnpj_conse = consecionaria.cnpj_conse
+INNER JOIN 
+    cliente ON compra.cpf_clint = cliente.cpf_clint;
+
+SELECT 
+    seguro.cod_seg,
+    seguro.data_inicio,
+    seguro.data_termino,
+    cliente.nome_clint,
+    cliente.telefone_clint,
+    consecionaria.nome_conse,
+    consecionaria.telefone_conse,
+    carro.nome_car,
+    carro.marca_car,
+    carro.ano_car
+FROM 
+    seguro
+INNER JOIN 
+    cliente ON seguro.cpf_clint = cliente.cpf_clint
+INNER JOIN 
+    consecionaria ON seguro.cnpj_conse = consecionaria.cnpj_conse
+INNER JOIN 
+    carro ON seguro.cod_car = carro.cod_car;
+
+update seguro
+set data_termino = "30/04/2026"
+where cod_seg = 43;
+
+update compra
+set data_vend = "27/08/2023"
+where cod_vend = 01;
+
+update cliente
+set nome_clint = "Susana de Oliveira"
+where cpf_clint = "123.456.789-09";
+
+alter table cliente
+add Email varchar(255);
+
+alter table consecionaria
+add Email varchar(255);
+
+alter table seguro
+add valor_seg varchar (50);
+
+delete * from compra where cod_vend = 4;
+delete * from seguro where cod_seg = 45;
+
+subconsulta para obter o nome do cliente e o nome da concessionária em uma única consulta de compras
+SELECT 
+    compra.cod_vend,
+    compra.data_vend,
+    compra.valor_vend,
+    (SELECT cliente.nome_clint 
+     FROM cliente 
+     WHERE cliente.cpf_clint = compra.cpf_clint) AS nome_cliente,
+    (SELECT consecionaria.nome_conse 
+     FROM consecionaria 
+     WHERE consecionaria.cnpj_conse = compra.cnpj_conse) AS nome_concessionaria,
+    carro.nome_car,
+    carro.marca_car,
+    carro.ano_car,
+    seguro.data_inicio,
+    seguro.data_termino
+FROM 
+    compra
+INNER JOIN 
+    carro ON compra.cod_car = carro.cod_car
+INNER JOIN 
+    seguro ON compra.cod_seg = seguro.cod_seg;
+
+subconsulta para filtrar compras realizadas por clientes de uma cidade específica
+SELECT 
+    compra.cod_vend,
+    compra.data_vend,
+    compra.valor_vend,
+    cliente.nome_clint,
+    cliente.cidade_clint,
+    consecionaria.nome_conse,
+    carro.nome_car,
+    carro.marca_car,
+    carro.ano_car,
+    seguro.data_inicio,
+    seguro.data_termino
+FROM 
+    compra
+INNER JOIN 
+    cliente ON compra.cpf_clint = cliente.cpf_clint
+INNER JOIN 
+    consecionaria ON compra.cnpj_conse = consecionaria.cnpj_conse
+INNER JOIN 
+    carro ON compra.cod_car = carro.cod_car
+INNER JOIN 
+    seguro ON compra.cod_seg = seguro.cod_seg
+WHERE 
+    cliente.cidade_clint = (
+        SELECT cidade_clint 
+        FROM cliente 
+        WHERE cliente.cpf_clint = compra.cpf_clint
+        LIMIT 1
+    );
+
+
+
+
